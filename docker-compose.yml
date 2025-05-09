@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  web:
+    image: php:8.2-apache
+    container_name: ironshield_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - ironshield_net
+
+  db:
+    image: mysql:8.0
+    container_name: ironshield_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ironshield
+      MYSQL_USER: superiron
+      MYSQL_PASSWORD: "]zIiZHz-Hq8eHR2h"
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./ironshield.sql:/docker-entrypoint-initdb.d/ironshield.sql
+    networks:
+      - ironshield_net
+
+  backend:
+    build: ./backend
+    container_name: ironshield_backend
+    ports:
+      - "5000:5000"
+    networks:
+      - ironshield_net
+    depends_on:
+      - db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ironshield_phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - ironshield_net
+
+volumes:
+  db_data:
+
+networks:
+  ironshield_net:
