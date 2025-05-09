@@ -88,13 +88,10 @@ CREATE TABLE escaneos (
 -- Tabla: logs_sniffer
 CREATE TABLE logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    ip_origen VARCHAR(45),
-    ip_destino VARCHAR(45),
-    puerto_origen INT,
-    puerto_destino INT,
-    protocolo VARCHAR(10),
-    tamano INT,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+    ip_src VARCHAR(45),
+    ip_dst VARCHAR(45),
+    tipo_evento VARCHAR(100),
+    fecha DATETIME
 );
 
 
